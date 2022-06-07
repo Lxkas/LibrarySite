@@ -17,6 +17,10 @@ import {
 	ScrollArea,
 	Accordion,
 	Menu,
+	SegmentedControl,
+	Center,
+	Box,
+	MediaQuery,
 } from "@mantine/core";
 
 import {
@@ -53,6 +57,27 @@ const NAVIGATION_DATA = [
 		icon: <FontAwesomeIcon icon={faBookOpen} />,
 		label: "My Books",
 		href: "/mybooks",
+	},
+];
+
+const LIGHT_DARK_DATA = [
+	{
+		value: "light",
+		label: (
+			<Center>
+				<FontAwesomeIcon icon={faSun} size={"1x"} />
+				<Box ml={10}>Light</Box>
+			</Center>
+		),
+	},
+	{
+		value: "dark",
+		label: (
+			<Center>
+				<FontAwesomeIcon icon={faMoon} size={"1x"} />
+				<Box ml={10}>Dark</Box>
+			</Center>
+		),
 	},
 ];
 
@@ -190,6 +215,7 @@ export default function ApplicationContainer({ children }: PropsWithChildren) {
 			header={
 				<Header height={70} p="md">
 					<div className="flex h-full flex-row items-center">
+						{/* Burger button */}
 						<span>
 							<Burger
 								opened={opened}
@@ -200,6 +226,7 @@ export default function ApplicationContainer({ children }: PropsWithChildren) {
 							/>
 						</span>
 
+						{/* "Logo" lmfao */}
 						<span className="flex-grow">
 							<div className="w-max">
 								<Link href="/" passHref>
@@ -219,8 +246,46 @@ export default function ApplicationContainer({ children }: PropsWithChildren) {
 							</div>
 						</span>
 
+						{/* Dark / Light switcher */}
 						<span>
-							<ActionIcon
+							<Group position="center" my="xl">
+								{/* If bigger than MD, hide */}
+								<MediaQuery
+									largerThan={"md"}
+									styles={{ display: "none" }}
+								>
+									<SegmentedControl
+										value={colorScheme}
+										onChange={(val) => {
+											if (val != "light" && val != "dark")
+												return;
+
+											toggleColorScheme(val);
+										}}
+										size="xs"
+										data={LIGHT_DARK_DATA}
+									/>
+								</MediaQuery>
+
+								{/* If smaller than MD, hide*/}
+								<MediaQuery
+									smallerThan={"md"}
+									styles={{ display: "none" }}
+								>
+									<SegmentedControl
+										value={colorScheme}
+										onChange={(val) => {
+											if (val != "light" && val != "dark")
+												return;
+
+											toggleColorScheme(val);
+										}}
+										size="sm"
+										data={LIGHT_DARK_DATA}
+									/>
+								</MediaQuery>
+							</Group>
+							{/* <ActionIcon
 								variant="outline"
 								color={dark ? "yellow" : "blue"}
 								onClick={() => toggleColorScheme()}
@@ -230,7 +295,7 @@ export default function ApplicationContainer({ children }: PropsWithChildren) {
 									icon={dark ? faSun : faMoon}
 									size={"1x"}
 								/>
-							</ActionIcon>
+							</ActionIcon> */}
 						</span>
 					</div>
 				</Header>
