@@ -35,6 +35,7 @@ import {
 	faMessage,
 	faArrowsLeftRight,
 	faTrash,
+	faHeart,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import UserSection from "./shared/navigation/UserSection";
@@ -48,6 +49,11 @@ const NAV_SLIDE_OUT = {
 
 const NAVIGATION_DATA = [
 	{ icon: <FontAwesomeIcon icon={faHome} />, label: "Home", href: "/" },
+	{
+		icon: <FontAwesomeIcon icon={faHeart} />,
+		label: "Favorites",
+		href: "/favorites",
+	},
 	{
 		icon: <FontAwesomeIcon icon={faClock} />,
 		label: "History",
