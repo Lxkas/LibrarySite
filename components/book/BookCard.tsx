@@ -14,11 +14,13 @@ import {
 	ScrollArea,
 	Divider,
 	ThemeIcon,
+	Overlay,
 } from "@mantine/core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-regular-svg-icons";
 import { classNames } from "@/utils/classNames";
 import { faCheck, faCheckCircle } from "@fortawesome/free-solid-svg-icons";
+import { BadgeCardProps } from "@/types/BadgeCardTypes";
 
 const useStyles = createStyles((theme) => ({
 	card: {
@@ -57,20 +59,28 @@ const useStyles = createStyles((theme) => ({
 	},
 }));
 
-interface BadgeCardProps {
-	image: string;
-	title: string;
-	main_category: string;
-	description: string;
+function OverlayLabel() {
+	return (
+		<div>
+			<Text>Unavailable</Text>
+		</div>
+	);
 }
 
-export default function BookCard({
-	image,
-	title,
-	description,
-	main_category,
-}: BadgeCardProps) {
+// TODO: Color the main_category pills
+export default function BookCard(props: BadgeCardProps) {
+	const {
+		image,
+		title,
+		description,
+		main_category,
+		available,
+		setDetailsOpen,
+		setCurrentModalObject,
+	} = props;
+
 	const { classes } = useStyles();
+
 	// const theme = useMantineTheme();
 
 	// const features = badges.map((badge) => (
@@ -91,7 +101,10 @@ export default function BookCard({
 			withBorder
 			radius="md"
 			p="md"
-			className={classNames(classes.card, "min-h-full w-full max-w-md")}
+			className={classNames(
+				classes.card,
+				"relative min-h-full w-full max-w-md"
+			)}
 		>
 			<Card.Section>
 				<Image src={image} alt={title} height={180} />
@@ -148,6 +161,12 @@ export default function BookCard({
 							classes.button,
 							"rounded-md px-4 py-2"
 						)}
+						onClick={() => {
+							if (setDetailsOpen && setCurrentModalObject) {
+								setCurrentModalObject(props);
+								setDetailsOpen(true);
+							}
+						}}
 					>
 						Details
 					</UnstyledButton>
@@ -175,6 +194,15 @@ export default function BookCard({
 					/>
 				</ActionIcon>
 			</Group>
+
+			{!available && (
+				<>
+					<Text className="absolute top-1/2 left-1/2 z-10 -translate-x-1/2 text-2xl font-bold uppercase text-white">
+						Unavailable
+					</Text>
+					<Overlay color="#000" zIndex={5} />
+				</>
+			)}
 		</Card>
 	);
 }
