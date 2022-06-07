@@ -1,0 +1,71 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model author {
+  AuthorID   Int       @id @unique(map: "AuthorID_UNIQUE") @default(autoincrement())
+  Birthday   DateTime? @db.DateTime(0)
+  Details    String?   @db.Text
+  FirstName  String    @db.VarChar(45)
+  MiddleName String?   @db.VarChar(45)
+  LastName   String    @db.VarChar(45)
+  book       book[]
+}
+
+model book {
+  BookID           Int        @id @unique(map: "BookID_UNIQUE") @default(autoincrement())
+  Title            String     @db.VarChar(45)
+  ISBN             String?    @unique(map: "ISBN_UNIQUE") @db.VarChar(45)
+  AuthorID         Int
+  PublisherID      Int?
+  Description      String?    @db.Text
+  Category         String     @db.VarChar(32)
+  Language         String     @db.VarChar(32)
+  PublicationDate  DateTime?  @db.DateTime(0)
+  Length           Int
+  BorrowedByUserID Int?
+  author           author     @relation(fields: [AuthorID], references: [AuthorID], onDelete: NoAction, onUpdate: NoAction, map: "FK_Book_Author")
+  user             user?      @relation(fields: [BorrowedByUserID], references: [UserID], onDelete: NoAction, onUpdate: NoAction, map: "FK_Book_User")
+  publisher        publisher? @relation(fields: [PublisherID], references: [PublisherID], onDelete: NoAction, onUpdate: NoAction, map: "FK_Book_Publisher")
+  borrows          borrows[]
+
+  @@index([AuthorID], map: "FK_Book_Author_idx")
+  @@index([PublisherID], map: "FK_Book_Publisher_idx")
+  @@index([BorrowedByUserID], map: "FK_Book_User_idx")
+}
+
+model borrows {
+  BorrowID       Int      @id @unique(map: "BorrowID_UNIQUE") @default(autoincrement())
+  BorrowedBookID Int
+  BorrowerUserID Int
+  BorrowedDate   DateTime @default(now()) @db.DateTime(0)
+  BorrowEndDate  DateTime @db.DateTime(0)
+  book           book     @relation(fields: [BorrowedBookID], references: [BookID], onDelete: NoAction, onUpdate: NoAction, map: "FK_Borrows_Book")
+  user           user     @relation(fields: [BorrowerUserID], references: [UserID], onDelete: NoAction, onUpdate: NoAction, map: "FK_Borrows_User")
+
+  @@index([BorrowedBookID], map: "FK_Borrows_Book_idx")
+  @@index([BorrowerUserID], map: "FK_Borrows_User_idx")
+}
+
+model publisher {
+  PublisherID Int    @id @unique(map: "PublisherID_UNIQUE") @default(autoincrement())
+  Name        String @db.VarChar(64)
+  book        book[]
+}
+
+model user {
+  UserID     Int       @id @unique(map: "UserID_UNIQUE") @default(autoincrement())
+  Username   String    @db.VarChar(45)
+  Password   String?   @db.VarChar(45)
+  Email      String    @db.VarChar(254)
+  FirstName  String    @db.VarChar(45)
+  MiddleName String?   @db.VarChar(45)
+  LastName   String    @db.VarChar(45)
+  book       book[]
+  borrows    borrows[]
+}
