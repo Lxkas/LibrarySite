@@ -22,7 +22,7 @@ const Home: NextPage = () => {
 			}
 			footer={
 				<Footer height={30}>
-					<span>Application footer</span>
+					<span className="text-red-400 m-4">Application footer</span>
 				</Footer>
 			}
 			header={
