@@ -22,14 +22,12 @@ jobs:
                   cache: "npm"
               env:
                   CI: true
-                  DATABASE_URL: ${{ secrets.DATABASE_URL }}
-                  NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
             - run: | 
                 touch .env.production
-                echo "The DATABASE_URL is: ${{env.DATABASE_URL}}"
-                echo "DATABASE_URL=${{env.DATABASE_URL}}" >> .env.production
-                echo "NEXTAUTH_SECRET=${{env.NEXTAUTH_SECRET}}" >> .env.production
-                echo "NEXTAUTH_URL=https://kirihi.me" >> .env.production
+                echo DB: ${{ secrets.DATABASE_URL }}
+                echo DATABASE_URL=${{ secrets.DATABASE_URL }} >> .env.production
+                echo NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }} >> .env.production
+                echo NEXTAUTH_URL=https://kirihi.me >> .env.production
                 
             - run: npm install
             - run: npm run build --if-present
