@@ -22,6 +22,8 @@ import {
 	Box,
 	MediaQuery,
 	Input,
+	Code,
+	Kbd,
 } from "@mantine/core";
 
 import {
@@ -193,22 +195,71 @@ export default function ApplicationContainer({ children }: PropsWithChildren) {
 
 									<Accordion multiple iconPosition="right">
 										<Accordion.Item label="Customization">
-											Colors, fonts, shadows and many
-											other parts are customizable to fit
-											your design needs
+											Lorem ipsum dolor sit amet
+											consectetur adipisicing elit.
+											Doloribus quos deleniti
+											reprehenderit, doloremque harum
+											atque. Repellendus, molestias.
+											Quisquam, pariatur possimus quod
+											nihil natus dignissimos maxime?
+											Exercitationem placeat, quod dolor
+											eveniet voluptatum magnam, quas
+											maxime labore laborum accusantium
+											itaque, quis alias voluptate rerum
+											nostrum praesentium ratione
+											excepturi dolore? Consectetur,
+											atque! Earum!
 										</Accordion.Item>
 
-										<Accordion.Item label="Flexibility">
-											Configure components appearance and
-											behavior with vast amount of
-											settings or overwrite any part of
-											component styles
+										<Accordion.Item label="Search keywords">
+											<div className="prose">
+												<p>
+													The searchbar accepts a
+													variety of certain keywords
+													you can use to narrow down a
+													book. Examples:
+												</p>
+												<br />
+												<ul>
+													<li>
+														<Code>{`{title}=Some title`}</Code>
+													</li>
+													<li>
+														<Code>{`{category}=mystery`}</Code>
+													</li>
+													<li>
+														<Code>{`{isbn}=isbn1234`}</Code>
+													</li>
+												</ul>
+											</div>
 										</Accordion.Item>
 
-										<Accordion.Item label="No annoying focus ring">
-											With new :focus-visible pseudo-class
-											focus ring appears only when user
-											navigates with keyboard
+										<Accordion.Item label="Keyboard Shortcuts">
+											The vast majority of elements, if
+											not all, can be navigated to, from,
+											or inside of with the keyboard.{" "}
+											<Kbd>Tab</Kbd> will iterate through
+											the tabindex table, allowing you to
+											select elements, while{" "}
+											<Kbd>Space</Kbd> and{" "}
+											<Kbd>Enter</Kbd> will simulate a
+											left click.
+											<br />
+											<br />
+											There are also many shortcuts:
+											<br />
+											<ul>
+												<li>
+													Command Pallete{" "}
+													<Kbd>Ctrl</Kbd> +{" "}
+													<Kbd>K</Kbd>{" "}
+												</li>
+												<li>
+													Goto My Books{" "}
+													<Kbd>Ctrl</Kbd> +{" "}
+													<Kbd>M</Kbd>{" "}
+												</li>
+											</ul>
 										</Accordion.Item>
 									</Accordion>
 								</Navbar.Section>
