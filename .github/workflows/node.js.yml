@@ -15,15 +15,6 @@ jobs:
 
         steps:
             - uses: actions/checkout@v3
-            
-            - name: Create env file
-              uses: SpicyPizza/create-envfile@v1.3
-              with:
-                envkey_DATABASE_URL: ${{ secrets.DATABASE_URL }}
-                envkey_NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
-                envkey_NEXTAUTH_URL: https://kirihi.me
-                file_name: .env.production
-                
             - name: Use Node.js ${{ matrix.node-version }}
               uses: actions/setup-node@v3
               with:
@@ -31,9 +22,14 @@ jobs:
                   cache: "npm"
               env:
                   CI: true
-#                   DATABASE_URL: ${{ secrets.DATABASE_URL }}
-#                   NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
-#                   NEXTAUTH_URL: ${{ secrets.NEXTAUTH_URL }}
+                  DATABASE_URL: ${{ secrets.DATABASE_URL }}
+                  NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
+            - run: | 
+                touch .env.production
+                echo DATABASE_URL="${{env.DATABASE_URL}}" >> .env.production
+                echo NEXTAUTH_SECRET="${{env.NEXTAUTH_SECRET}}" >> .env.production
+                echo NEXTAUTH_URL="https://kirihi.me" >> .env.production
+                
             - run: npm install
             - run: npm run build --if-present
             - run: pm2 reload librarysite
