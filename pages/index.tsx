@@ -21,13 +21,10 @@ const Home: NextPage = () => {
 	const [currentModalObject, setCurrentModalObject] =
 		useState<BadgeCardProps>();
 
-	console.log(currentModalObject);
-
 	// TODO: Type the SWR responses
 	const { data, error } = useSWR("/api/books/get", basicFetcher);
 
 	if (!data) {
-		console.log("Loading...");
 		return (
 			<div className="relative flex h-full w-full ">
 				<div className="m-auto text-8xl font-bold uppercase">
@@ -36,8 +33,6 @@ const Home: NextPage = () => {
 				<LoadingOverlay visible={true} />
 			</div>
 		);
-	} else {
-		console.log(data);
 	}
 
 	return (
