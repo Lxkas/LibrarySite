@@ -39,9 +39,11 @@ import {
 	faArrowsLeftRight,
 	faTrash,
 	faHeart,
+	faArrowRightToBracket,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import UserSection from "./shared/navigation/UserSection";
+import { signIn, useSession } from "next-auth/react";
 
 const NAV_SLIDE_OUT = {
 	in: { transform: "translateX(0)" },
@@ -134,6 +136,9 @@ function NavItem({ icon, label, href }: MainLinkProps) {
 }
 
 export default function ApplicationContainer({ children }: PropsWithChildren) {
+	const session = useSession();
+	const isLoggedIn = session.status === "authenticated";
+
 	const theme = useMantineTheme();
 	const { colorScheme, toggleColorScheme } = useMantineColorScheme();
 
@@ -258,13 +263,68 @@ export default function ApplicationContainer({ children }: PropsWithChildren) {
 								</Navbar.Section>
 
 								{/* Last section with normal height (depends on section content) */}
-								<Navbar.Section>
-									<UserSection
-										image="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=255&q=80"
-										name="Some Guy Here"
-										email="Someone@person.com"
-									/>
-								</Navbar.Section>
+								{session.status === "authenticated" ? (
+									<Navbar.Section>
+										<UserSection
+											image="https://images.unsplash.com/photo-1614680376573-df3480f0c6ff?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=255&q=80"
+											name={
+												session.data.user?.email ?? ""
+											}
+											email={
+												session.data.user?.name ?? ""
+											}
+										/>
+									</Navbar.Section>
+								) : (
+									<Box
+										sx={{
+											paddingTop: theme.spacing.sm,
+											borderTop: `1px solid ${
+												theme.colorScheme === "dark"
+													? theme.colors.dark[4]
+													: theme.colors.gray[2]
+											}`,
+										}}
+									>
+										<UnstyledButton
+											sx={(theme) => ({
+												display: "block",
+												width: "100%",
+												padding: theme.spacing.md,
+												color:
+													theme.colorScheme === "dark"
+														? theme.colors.dark[0]
+														: theme.black,
+
+												"&:hover": {
+													backgroundColor:
+														theme.colorScheme ===
+														"dark"
+															? theme.colors
+																	.dark[8]
+															: theme.colors
+																	.gray[0],
+												},
+											})}
+											onClick={() => {
+												signIn();
+											}}
+										>
+											<Group>
+												<div className="flex w-full items-center justify-center text-center font-extrabold uppercase">
+													<span>Login</span>
+													<FontAwesomeIcon
+														className="ml-4"
+														icon={
+															faArrowRightToBracket
+														}
+														size={"1x"}
+													/>
+												</div>
+											</Group>
+										</UnstyledButton>
+									</Box>
+								)}
 							</div>
 						</Navbar>
 					)}

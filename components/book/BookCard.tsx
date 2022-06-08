@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import {
 	Card,
@@ -6,21 +6,20 @@ import {
 	Text,
 	Group,
 	Badge,
-	Button,
 	UnstyledButton,
 	ActionIcon,
 	createStyles,
-	useMantineTheme,
 	ScrollArea,
 	Divider,
-	ThemeIcon,
 	Overlay,
 } from "@mantine/core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-regular-svg-icons";
 import { classNames } from "@/utils/classNames";
-import { faCheck, faCheckCircle } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faX } from "@fortawesome/free-solid-svg-icons";
 import { BadgeCardProps } from "@/types/BadgeCardTypes";
+import BorrowBook from "@/utils/books/borrow";
+import { showNotification, updateNotification } from "@mantine/notifications";
 
 const useStyles = createStyles((theme) => ({
 	card: {
@@ -59,30 +58,23 @@ const useStyles = createStyles((theme) => ({
 	},
 }));
 
-function OverlayLabel() {
-	return (
-		<div>
-			<Text>Unavailable</Text>
-		</div>
-	);
-}
-
 // TODO: Color the main_category pills
 export default function BookCard(props: BadgeCardProps) {
 	const {
+		bookID,
 		image,
 		title,
 		description,
 		main_category,
 		available,
-		authorName,
-		authorDetails,
-		ISBN,
 		setDetailsOpen,
 		setCurrentModalObject,
 	} = props;
 
 	const { classes } = useStyles();
+
+	const [borrowClickedAlready, setBorrowClickedAlready] = useState(false);
+	const [availableState, setAvailableState] = useState(available);
 
 	// const theme = useMantineTheme();
 
@@ -179,6 +171,62 @@ export default function BookCard(props: BadgeCardProps) {
 							classes.button,
 							"rounded-md px-4 py-2"
 						)}
+						onClick={async () => {
+							if (borrowClickedAlready) {
+								showNotification({
+									color: "red",
+									title: "Already Borrowing",
+									message:
+										"Woah there! Slow down, the book is already in the process of being borrowed, or is already borrowed!",
+									autoClose: 3000,
+								});
+
+								return;
+							}
+
+							setBorrowClickedAlready(true);
+
+							showNotification({
+								id: "borrow-book-notif" + bookID,
+								loading: true,
+								title: "Borrowing the book",
+								message: `Attempting to borrow "${title}", hang tight!`,
+								autoClose: false,
+								disallowClose: true,
+							});
+
+							const result = await BorrowBook(bookID);
+							const result_json = await result.json();
+
+							const borrow_success = result_json.success;
+
+							console.log(result_json);
+
+							// TODO: Add error msg
+							// TODO: this adds another second to the update, remove it later
+							setTimeout(() => {
+								updateNotification({
+									id: "borrow-book-notif" + bookID,
+									color: borrow_success ? "teal" : "red",
+									title: borrow_success
+										? "Book Borrowed"
+										: "Failed to Borrow",
+									message: borrow_success
+										? `"${title}" has been borrowed, and added to your library!`
+										: "Uh oh! Something went wrong while trynig to borrow the book!",
+									icon: (
+										<FontAwesomeIcon
+											icon={
+												borrow_success ? faCheck : faX
+											}
+										/>
+									),
+									autoClose: 2000,
+								});
+
+								setAvailableState(false);
+							}, 1000);
+						}}
 					>
 						{/* TODO: Borrow functionality, and notifications */}
 						Borrow
@@ -199,7 +247,7 @@ export default function BookCard(props: BadgeCardProps) {
 				</ActionIcon>
 			</Group>
 
-			{!available && (
+			{!availableState && (
 				<>
 					<Text className="absolute top-1/2 left-1/2 z-10 -translate-x-1/2 text-2xl font-bold uppercase text-white">
 						Unavailable

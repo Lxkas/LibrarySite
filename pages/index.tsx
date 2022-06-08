@@ -52,13 +52,13 @@ const Home: NextPage = () => {
 
 	const searchbarRef = useRef<HTMLInputElement>(null);
 
-	if (!data) {
+	if (!data || error) {
 		return (
 			<div className="relative flex h-full w-full ">
 				<div className="m-auto text-8xl font-bold uppercase">
-					Loading...
+					{error ? error : "Loading..."}
 				</div>
-				<LoadingOverlay visible={true} />
+				<LoadingOverlay visible={!error && !data} />
 			</div>
 		);
 	}
@@ -140,6 +140,7 @@ const Home: NextPage = () => {
 						return (
 							<BookGridCol
 								key={"bookcol" + book.Title}
+								bookID={book.BookID}
 								title={book.Title}
 								main_category={book.Category}
 								authorName={`${book.author.FirstName} ${book.author.MiddleName} ${book.author.LastName}`}

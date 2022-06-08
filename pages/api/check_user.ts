@@ -6,6 +6,7 @@ import { UserWithoutPass } from "@/types/UserWithoutPass";
 
 type Data = UserWithoutPass | null | RequestError;
 
+// TODO: Probably delete this, since next-auth is here
 // TODO: Make password case sensitive
 // TODO: Salt the password... like srsly
 export default async function handler(

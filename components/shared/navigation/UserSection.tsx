@@ -24,6 +24,8 @@ import {
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import React, { forwardRef, useRef } from "react";
 
+import { signOut } from "next-auth/react";
+
 interface UserProps extends React.ComponentPropsWithoutRef<"button"> {
 	image: string;
 	name: string;
@@ -134,6 +136,9 @@ export default function UserSection(props: UserProps) {
 				<Menu.Item
 					color="red"
 					icon={<FontAwesomeIcon icon={faSignOut} size={"1x"} />}
+					onClick={() => {
+						signOut();
+					}}
 				>
 					Logout
 				</Menu.Item>

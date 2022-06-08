@@ -1,7 +1,7 @@
 import "../styles/globals.css";
 
 import { GetServerSidePropsContext } from "next";
-import { useState } from "react";
+import { PropsWithChildren, ReactNode, useState } from "react";
 import { AppProps } from "next/app";
 
 import { getCookie, setCookies } from "cookies-next";
@@ -18,6 +18,21 @@ config.autoAddCss = false;
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import ApplicationContainer from "@/components/ApplicationContainer";
 import Head from "next/head";
+
+import { getSession, SessionProvider, useSession } from "next-auth/react";
+import { NotificationsProvider } from "@mantine/notifications";
+
+// TODO: Make loading better
+function Auth({ children }: PropsWithChildren) {
+	// if `{ required: true }` is supplied, `status` can only be "loading" or "authenticated"
+	const { status } = useSession({ required: true });
+
+	if (status === "loading") {
+		return <div>Loading...</div>;
+	}
+
+	return children;
+}
 
 export default function App(props: AppProps & { colorScheme: ColorScheme }) {
 	const { Component, pageProps } = props;
@@ -49,15 +64,37 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
 				<Head>
 					<title>Stamford Library</title>
 				</Head>
-				<ApplicationContainer>
-					<Component {...pageProps} />
-				</ApplicationContainer>
+				{/* @ts-ignore */}
+				<SessionProvider session={props.session}>
+					<NotificationsProvider>
+						<ApplicationContainer>
+							{/* @ts-ignore */}
+							{Component.requireAuth ? (
+								// @ts-ignore
+								<Auth>
+									<Component {...pageProps} />
+								</Auth>
+							) : (
+								<Component {...pageProps} />
+							)}
+						</ApplicationContainer>
+					</NotificationsProvider>
+				</SessionProvider>
 			</MantineProvider>
 		</ColorSchemeProvider>
 	);
 }
 
-App.getInitialProps = async ({ ctx }: { ctx: GetServerSidePropsContext }) => ({
-	// get color scheme from cookie
-	colorScheme: getCookie("mantine-color-scheme", ctx) || "dark",
-});
+// App.getInitialProps = async ({ ctx }: { ctx: GetServerSidePropsContext }) => ({
+// 	// get color scheme from cookie
+// 	colorScheme: getCookie("mantine-color-scheme", ctx) || "dark",
+// });
+
+App.getInitialProps = async ({ ctx }: { ctx: GetServerSidePropsContext }) => {
+	const session = await getSession(ctx);
+
+	return {
+		session,
+		colorScheme: getCookie("mantine-color-scheme", ctx) || "dark",
+	};
+};

@@ -1,6 +1,7 @@
 import { Dispatch, SetStateAction } from "react";
 
 export type BadgeCardProps = {
+	bookID: number;
 	image: string;
 	title: string;
 	authorName: string;
