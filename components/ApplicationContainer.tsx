@@ -21,6 +21,7 @@ import {
 	Center,
 	Box,
 	MediaQuery,
+	Input,
 } from "@mantine/core";
 
 import {
@@ -170,7 +171,14 @@ export default function ApplicationContainer({ children }: PropsWithChildren) {
 						>
 							<div className="flex h-full w-full flex-col gap-y-2 p-2">
 								<Navbar.Section>
-									First Section idk
+									<Input
+										icon={
+											<FontAwesomeIcon
+												icon={faMagnifyingGlass}
+											/>
+										}
+										placeholder="Search"
+									/>
 									<Divider my="sm" />
 								</Navbar.Section>
 
