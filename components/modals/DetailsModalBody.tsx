@@ -22,6 +22,7 @@ function TabItem(props: any) {
 
 export default function DetailsModalBody(props: any) {
 	const { currentModalObject } = props;
+
 	const theme = useMantineTheme();
 	const isPast = useMediaQuery(`(min-width: ${theme.breakpoints.xl}px)`);
 
@@ -42,14 +43,14 @@ export default function DetailsModalBody(props: any) {
 				icon={<FontAwesomeIcon icon={faUserPen} size={"1x"} />}
 			>
 				{/* TODO: AUTHOR */}
-				<TabItem text="Author" />
+				<TabItem text={currentModalObject?.authorName} />
 			</Tabs.Tab>
 			<Tabs.Tab
 				label="ISBN"
 				icon={<FontAwesomeIcon icon={faPassport} size={"1x"} />}
 			>
 				{/* TODO: BOOK ISBN */}
-				<TabItem text="ISBN1234567890" />
+				<TabItem text={currentModalObject?.ISBN} />
 			</Tabs.Tab>
 		</Tabs>
 	);

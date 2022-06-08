@@ -75,6 +75,9 @@ export default function BookCard(props: BadgeCardProps) {
 		description,
 		main_category,
 		available,
+		authorName,
+		authorDetails,
+		ISBN,
 		setDetailsOpen,
 		setCurrentModalObject,
 	} = props;
@@ -177,6 +180,7 @@ export default function BookCard(props: BadgeCardProps) {
 							"rounded-md px-4 py-2"
 						)}
 					>
+						{/* TODO: Borrow functionality, and notifications */}
 						Borrow
 					</UnstyledButton>
 				</div>

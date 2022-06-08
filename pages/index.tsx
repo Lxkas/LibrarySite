@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { NextPage } from "next";
 
-import { Button, Grid, Modal, ScrollArea } from "@mantine/core";
+import { Button, Grid, LoadingOverlay, Modal, ScrollArea } from "@mantine/core";
 import BookCard from "@/components/book/BookCard";
 import { BadgeCardProps } from "@/types/BadgeCardTypes";
 import DetailsModalBody from "@/components/modals/DetailsModalBody";
+import useSWR from "swr";
+import { basicFetcher } from "@/utils/basic-fetcher";
 
 function BookGridCol(props: BadgeCardProps) {
 	return (
@@ -14,80 +16,29 @@ function BookGridCol(props: BadgeCardProps) {
 	);
 }
 
-const bookData: BadgeCardProps[] = [
-	{
-		title: "A Hitchhiker's Guide to the Galaxy",
-		main_category: "Adventure",
-		description:
-			"Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi sunt perspiciatis voluptatum beatae dolorem deleniti harum sapiente minima voluptas modi!",
-		image: "https://images.unsplash.com/photo-1437719417032-8595fd9e9dc6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80",
-		available: true,
-	},
-
-	{
-		title: "Something wonk",
-		main_category: "Mystery",
-		description:
-			"Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi sunt perspiciatis voluptatum beatae dolorem deleniti harum sapiente minima voluptas modi! Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi sunt perspiciatis voluptatum beatae dolorem deleniti harum sapiente minima voluptas modi! Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi sunt perspiciatis voluptatum beatae dolorem deleniti harum sapiente minima voluptas modi! Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi sunt perspiciatis voluptatum beatae dolorem deleniti harum sapiente minima voluptas modi!",
-		image: "https://images.unsplash.com/photo-1437719417032-8595fd9e9dc6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80",
-		available: true,
-	},
-
-	{
-		title: "Some Title 5",
-		main_category: "Horror",
-		description:
-			"Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur nemo rem voluptates optio. Illum voluptate similique laudantium, in molestias amet omnis corrupti vitae eum, atque harum tempore adipisci accusamus molestiae!",
-		image: "https://images.unsplash.com/photo-1437719417032-8595fd9e9dc6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80",
-		available: false,
-	},
-
-	{
-		title: "Some Title 4",
-		main_category: "Romance",
-		description:
-			"Lorem ipsum dolis corrupti vitae eum, atque harum tempore adipisci accusamus molestiae!",
-		image: "https://images.unsplash.com/photo-1437719417032-8595fd9e9dc6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80",
-		available: true,
-	},
-	{
-		title: "Some Title 0",
-		main_category: "Romance",
-		description:
-			"Lorem ipsum dolis corrupti vitae eum, atque harum tempore adipisci accusamus molestiae!",
-		image: "https://images.unsplash.com/photo-1437719417032-8595fd9e9dc6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80",
-		available: true,
-	},
-	{
-		title: "Some Title 1",
-		main_category: "Romance",
-		description:
-			"Lorem ipsum dolis corrupti vitae eum, atque harum tempore adipisci accusamus molestiae!",
-		image: "https://images.unsplash.com/photo-1437719417032-8595fd9e9dc6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80",
-		available: true,
-	},
-	{
-		title: "Some Title 2",
-		main_category: "Romance",
-		description:
-			"Lorem ipsum dolis corrupti vitae eum, atque harum tempore adipisci accusamus molestiae!",
-		image: "https://images.unsplash.com/photo-1437719417032-8595fd9e9dc6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80",
-		available: true,
-	},
-	{
-		title: "Some Title 3",
-		main_category: "Romance",
-		description:
-			"Lorem ipsum dolis corrupti vitae eum, atque harum tempore adipisci accusamus molestiae!tempore adipisci accusamus molestiae!tempore adipisci accusamus molestiae!tempore adipisci accusamus molestiae!tempore adipisci accusamus molestiae!tempore adipisci accusamus molestiae!tempore adipsci accusamus molestiae!tempore adipisci accusamus molestiae!tempore adipisci accusamus molestiae!tempore adipsci accusamus molestiae!tempore adipisci accusamus molestiae!tempore adipisci accusamus molestiae!tempore adipsci accusamus molestiae!tempore adipisci accusamus molestiae!tempore adipisci accusamus molestiae!tempore adipsci accusamus molestiae!tempore adipisci accusamus molestiae!tempore adipisci accusamus molestiae!tempore adipsci accusamus molestiae!tempore adipisci accusamus molestiae!tempore adipisci accusamus molestiae!tempore adipsci accusamus molestiae!tempore adipisci accusamus molestiae!tempore adipisci accusamus molestiae!tempore adipsci accusamus molestiae!tempore adipisci accusamus molestiae!tempore adipisci accusamus molestiae!tempore adipsci accusamus molestiae!tempore adipisci accusamus molestiae!tempore adipisci accusamus molestiae!tempore adipsci accusamus molestiae!tempore adipisci accusamus molestiae!tempore adipisci accusamus molestiae!tempore adipisci accusamus molestiae!",
-		image: "https://images.unsplash.com/photo-1437719417032-8595fd9e9dc6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80",
-		available: false,
-	},
-];
-
 const Home: NextPage = () => {
 	const [detailsModalOpen, setDetailsModalOpen] = useState(false);
 	const [currentModalObject, setCurrentModalObject] =
 		useState<BadgeCardProps>();
+
+	console.log(currentModalObject);
+
+	// TODO: Type the SWR responses
+	const { data, error } = useSWR("/api/books/get", basicFetcher);
+
+	if (!data) {
+		console.log("Loading...");
+		return (
+			<div className="relative flex h-full w-full ">
+				<div className="m-auto text-8xl font-bold uppercase">
+					Loading...
+				</div>
+				<LoadingOverlay visible={true} />
+			</div>
+		);
+	} else {
+		console.log(data);
+	}
 
 	return (
 		<>
@@ -106,11 +57,18 @@ const Home: NextPage = () => {
 			</Modal>
 
 			<Grid justify="start" align="center">
-				{bookData.map((book) => {
+				{data.map((book: any) => {
 					return (
 						<BookGridCol
-							key={"bookcol" + book.title}
-							{...book}
+							key={"bookcol" + book.Title}
+							title={book.Title}
+							main_category={book.Category}
+							authorName={`${book.author.FirstName} ${book.author.MiddleName} ${book.author.LastName}`}
+							authorDetails={book.author.Details}
+							ISBN={book.ISBN}
+							description={book.Description}
+							available={book.borrows.length == 0}
+							image="https://images.unsplash.com/photo-1437719417032-8595fd9e9dc6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80"
 							setDetailsOpen={setDetailsModalOpen}
 							setCurrentModalObject={setCurrentModalObject}
 						/>
@@ -118,9 +76,6 @@ const Home: NextPage = () => {
 				})}
 			</Grid>
 		</>
-		// <ScrollArea className="relative h-full max-h-1 min-h-full w-full max-w-full overflow-x-hidden">
-
-		// </ScrollArea>
 	);
 };
 

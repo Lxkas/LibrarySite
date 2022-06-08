@@ -55,25 +55,25 @@ export default async function handler(
 	//     }]
 	//   }
 
-	result.forEach((book) => {
-		// sort first so only active borrows
-		const borrows = book.borrows;
+	// result.forEach((book) => {
+	// 	// sort first so only active borrows
+	// 	const borrows = book.borrows;
 
-		let available = borrows.length > 0;
+	// 	let available = borrows.length > 0;
 
-		console.log(
-			`"${book.Title} is ${
-				available
-					? `not available, it was rented by ${borrows[0].user
-							.Username!}`
-					: "available!"
-			}"`
-		);
+	// 	console.log(
+	// 		`"${book.Title} is ${
+	// 			available
+	// 				? `not available, it was rented by ${borrows[0].user
+	// 						.Username!}`
+	// 				: "available!"
+	// 		}"`
+	// 	);
 
-		// console.log(
-		// 	`Book title "${book.Title}" is ${true ? `` : "available!"}`
-		// );
-	});
+	// 	// console.log(
+	// 	// 	`Book title "${book.Title}" is ${true ? `` : "available!"}`
+	// 	// );
+	// });
 
 	res.status(200).json(result);
 }

@@ -238,7 +238,22 @@ export default function ApplicationContainer({ children }: PropsWithChildren) {
 								<Link href="/" passHref>
 									<Text
 										component="a"
-										className="text-2xl font-bold uppercase"
+										className="hidden text-2xl font-bold uppercase sm:inline"
+										variant={dark ? "gradient" : "text"}
+										gradient={{
+											from: "cyan",
+											to: "indigo",
+											deg: 45,
+										}}
+									>
+										Stamford Library
+									</Text>
+								</Link>
+
+								<Link href="/" passHref>
+									<Text
+										component="a"
+										className="text-xl font-bold uppercase sm:hidden"
 										variant={dark ? "gradient" : "text"}
 										gradient={{
 											from: "cyan",

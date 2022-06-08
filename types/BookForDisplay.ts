@@ -15,6 +15,8 @@ export const bookForDisplayValidator = Prisma.validator<Prisma.bookInclude>()({
 			},
 		},
 	},
+
+	author: {},
 });
 
 export type BookForDisplay = Prisma.bookGetPayload<{
