@@ -173,14 +173,7 @@ export default function ApplicationContainer({ children }: PropsWithChildren) {
 						>
 							<div className="flex h-full w-full flex-col gap-y-2 p-2">
 								<Navbar.Section>
-									<Input
-										icon={
-											<FontAwesomeIcon
-												icon={faMagnifyingGlass}
-											/>
-										}
-										placeholder="Search"
-									/>
+									Something here idk
 									<Divider my="sm" />
 								</Navbar.Section>
 
