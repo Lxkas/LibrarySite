@@ -26,9 +26,10 @@ jobs:
                   NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
             - run: | 
                 touch .env.production
-                echo DATABASE_URL="${{env.DATABASE_URL}}" >> .env.production
-                echo NEXTAUTH_SECRET="${{env.NEXTAUTH_SECRET}}" >> .env.production
-                echo NEXTAUTH_URL="https://kirihi.me" >> .env.production
+                echo "The DATABASE_URL is: ${{env.DATABASE_URL}}"
+                echo "DATABASE_URL=${{env.DATABASE_URL}}" >> .env.production
+                echo "NEXTAUTH_SECRET=${{env.NEXTAUTH_SECRET}}" >> .env.production
+                echo "NEXTAUTH_URL=https://kirihi.me" >> .env.production
                 
             - run: npm install
             - run: npm run build --if-present
