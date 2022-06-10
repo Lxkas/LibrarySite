@@ -1,7 +1,8 @@
+import { withSentry } from "@sentry/nextjs";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
-export default NextAuth({
+const handler = NextAuth({
 	// Configure one or more authentication providers
 	providers: [
 		CredentialsProvider({
@@ -19,7 +20,7 @@ export default NextAuth({
 				},
 				password: { label: "Password", type: "password" },
 			},
-			async authorize(credentials, req) {
+			async authorize(credentials, _req) {
 				// console.log("AUTH CALL", credentials, req);
 
 				// You need to provide your own logic here that takes the credentials
@@ -58,3 +59,5 @@ export default NextAuth({
 		}),
 	],
 });
+
+export default withSentry(handler);

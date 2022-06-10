@@ -1,20 +1,16 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import type { NextApiRequest, NextApiResponse } from "next";
-import { prisma } from "@/utils/db/connect";
-import { RequestError } from "@/types/RequertError";
 import {
 	BookForDisplay,
 	bookForDisplayValidator,
 } from "@/types/BookForDisplay";
+import { RequestError } from "@/types/RequertError";
+import { prisma } from "@/utils/db/connect";
+import { withSentry } from "@sentry/nextjs";
+import type { NextApiRequest, NextApiResponse } from "next";
 
 type Data = null | BookForDisplay[] | RequestError;
 
-// TODO: Make password case sensitive
-// TODO: Salt the password... like srsly
-export default async function handler(
-	req: NextApiRequest,
-	res: NextApiResponse<Data>
-) {
+async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
 	if (req.method !== "GET") {
 		return res.status(405).json({
 			error: "Only GET requests are supported!",
@@ -77,3 +73,5 @@ export default async function handler(
 
 	res.status(200).json(result);
 }
+
+export default withSentry(handler);

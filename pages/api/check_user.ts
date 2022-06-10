@@ -2,6 +2,7 @@
 import { RequestError } from "@/types/RequertError";
 import { UserWithoutPass } from "@/types/UserWithoutPass";
 import { prisma } from "@/utils/db/connect";
+import { withSentry } from "@sentry/nextjs";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 type Data = UserWithoutPass | null | RequestError;
@@ -9,10 +10,7 @@ type Data = UserWithoutPass | null | RequestError;
 // TODO: Probably delete this, since next-auth is here
 // TODO: Make password case sensitive
 // TODO: Salt the password... like srsly
-export default async function handler(
-	req: NextApiRequest,
-	res: NextApiResponse<Data>
-) {
+async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
 	if (req.method !== "POST") {
 		return res.status(405).json({
 			error: "Only POST requests are supported!",
@@ -52,3 +50,5 @@ export default async function handler(
 
 	res.status(200).json(result);
 }
+
+export default withSentry(handler);
