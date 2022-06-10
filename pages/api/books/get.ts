@@ -3,7 +3,7 @@ import {
 	BookForDisplay,
 	bookForDisplayValidator,
 } from "@/types/BookForDisplay";
-import { RequestError } from "@/types/RequertError";
+import { RequestError } from "@/types/RequestError";
 import { prisma } from "@/utils/db/connect";
 import { withSentry } from "@sentry/nextjs";
 import type { NextApiRequest, NextApiResponse } from "next";
@@ -12,7 +12,7 @@ type Data = null | BookForDisplay[] | RequestError;
 
 async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
 	if (req.method !== "GET") {
-		return res.status(405).json({
+		return await res.status(405).json({
 			error: "Only GET requests are supported!",
 		});
 	}
@@ -71,7 +71,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
 	// 	// );
 	// });
 
-	res.status(200).json(result);
+	return await res.status(200).json(result);
 }
 
 export default withSentry(handler);

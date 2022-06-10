@@ -1,5 +1,5 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import { RequestError } from "@/types/RequertError";
+import { RequestError } from "@/types/RequestError";
 import { prisma } from "@/utils/db/connect";
 import { withSentry } from "@sentry/nextjs";
 import type { NextApiRequest, NextApiResponse } from "next";
@@ -13,7 +13,7 @@ type Data =
 
 async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
 	if (req.method !== "POST") {
-		return res.status(405).json({
+		return await res.status(405).json({
 			error: "Only POST requests are supported!",
 		});
 	}
@@ -33,11 +33,11 @@ async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
 	});
 
 	if (result) {
-		return res.status(200).json({
+		return await res.status(200).json({
 			success: true,
 		});
 	} else {
-		return res.status(400).json({
+		return await res.status(400).json({
 			error: "Wtf?",
 		});
 	}

@@ -1,5 +1,5 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import { RequestError } from "@/types/RequertError";
+import { RequestError } from "@/types/RequestError";
 import { UserWithoutPass } from "@/types/UserWithoutPass";
 import { prisma } from "@/utils/db/connect";
 import { withSentry } from "@sentry/nextjs";
@@ -12,7 +12,7 @@ type Data = UserWithoutPass | null | RequestError;
 // TODO: Salt the password... like srsly
 async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
 	if (req.method !== "POST") {
-		return res.status(405).json({
+		return await res.status(405).json({
 			error: "Only POST requests are supported!",
 		});
 	}
@@ -20,11 +20,11 @@ async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
 	const { email, password } = req.body;
 
 	if (!email) {
-		return res.status(400).json({ error: "Invalid email!" });
+		return await res.status(400).json({ error: "Invalid email!" });
 	}
 
 	if (!password) {
-		return res.status(400).json({ error: "Invalid password!" });
+		return await res.status(400).json({ error: "Invalid password!" });
 	}
 
 	const result = await prisma?.user.findFirst({
@@ -43,7 +43,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
 	});
 
 	if (result === null) {
-		return res.status(200).json({
+		return await res.status(200).json({
 			error: "Invalid password!",
 		});
 	}
