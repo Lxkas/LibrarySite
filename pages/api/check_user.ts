@@ -1,8 +1,8 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import type { NextApiRequest, NextApiResponse } from "next";
-import { prisma } from "@/utils/db/connect";
 import { RequestError } from "@/types/RequertError";
 import { UserWithoutPass } from "@/types/UserWithoutPass";
+import { prisma } from "@/utils/db/connect";
+import type { NextApiRequest, NextApiResponse } from "next";
 
 type Data = UserWithoutPass | null | RequestError;
 
@@ -44,7 +44,7 @@ export default async function handler(
 		},
 	});
 
-	if (result == null) {
+	if (result === null) {
 		return res.status(200).json({
 			error: "Invalid password!",
 		});
