@@ -1,30 +1,25 @@
 import {
-	faArrowsLeftRight,
-	faChevronLeft,
 	faChevronRight,
 	faGear,
 	faMagnifyingGlass,
 	faMessage,
 	faPhotoFilm,
 	faSignOut,
-	faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-	Box,
-	UnstyledButton,
-	Group,
 	Avatar,
-	Text,
-	useMantineTheme,
-	Menu,
+	Box,
 	Divider,
-	Button,
+	Group,
+	Menu,
+	Text,
+	UnstyledButton,
+	useMantineTheme,
 } from "@mantine/core";
-import { useDisclosure, useMediaQuery } from "@mantine/hooks";
-import React, { forwardRef, useRef } from "react";
-
+import { useMediaQuery } from "@mantine/hooks";
 import { signOut } from "next-auth/react";
+import React, { forwardRef } from "react";
 
 interface UserProps extends React.ComponentPropsWithoutRef<"button"> {
 	image: string;

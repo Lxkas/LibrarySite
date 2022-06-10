@@ -1,6 +1,13 @@
-import React, { useRef, useState } from "react";
-import { NextPage } from "next";
-
+import BookCard from "@/components/book/BookCard";
+import DetailsModalBody from "@/components/modals/DetailsModalBody";
+import { BadgeCardProps } from "@/types/BadgeCardTypes";
+import { basicFetcher } from "@/utils/basic-fetcher";
+import {
+	faArrowUp,
+	faFilter,
+	faMagnifyingGlass,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
 	ActionIcon,
 	Affix,
@@ -10,25 +17,12 @@ import {
 	Input,
 	LoadingOverlay,
 	Modal,
-	ScrollArea,
 	Transition,
 } from "@mantine/core";
-import BookCard from "@/components/book/BookCard";
-import { BadgeCardProps } from "@/types/BadgeCardTypes";
-import DetailsModalBody from "@/components/modals/DetailsModalBody";
+import { useWindowScroll } from "@mantine/hooks";
+import { NextPage } from "next";
+import React, { useRef, useState } from "react";
 import useSWR from "swr";
-import { basicFetcher } from "@/utils/basic-fetcher";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-	faArrowUp,
-	faFilter,
-	faMagnifyingGlass,
-} from "@fortawesome/free-solid-svg-icons";
-import {
-	useDebouncedValue,
-	useEventListener,
-	useWindowScroll,
-} from "@mantine/hooks";
 
 function BookGridCol(props: BadgeCardProps) {
 	return (

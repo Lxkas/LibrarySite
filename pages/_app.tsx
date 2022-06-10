@@ -1,26 +1,21 @@
-import "../styles/globals.css";
-
-import { GetServerSidePropsContext } from "next";
-import { PropsWithChildren, ReactNode, useState } from "react";
-import { AppProps } from "next/app";
-
-import { getCookie, setCookies } from "cookies-next";
-
+import ApplicationContainer from "@/components/ApplicationContainer";
+import { config } from "@fortawesome/fontawesome-svg-core";
+import "@fortawesome/fontawesome-svg-core/styles.css";
 import {
 	ColorScheme,
 	ColorSchemeProvider,
 	MantineProvider,
 } from "@mantine/core";
-
-import { config } from "@fortawesome/fontawesome-svg-core";
-config.autoAddCss = false;
-
-import "@fortawesome/fontawesome-svg-core/styles.css";
-import ApplicationContainer from "@/components/ApplicationContainer";
-import Head from "next/head";
-
-import { getSession, SessionProvider, useSession } from "next-auth/react";
 import { NotificationsProvider } from "@mantine/notifications";
+import { getCookie, setCookies } from "cookies-next";
+import { GetServerSidePropsContext } from "next";
+import { getSession, SessionProvider, useSession } from "next-auth/react";
+import { AppProps } from "next/app";
+import Head from "next/head";
+import { PropsWithChildren, useState } from "react";
+import "../styles/globals.css";
+
+config.autoAddCss = false;
 
 // TODO: Make loading better
 function Auth({ children }: PropsWithChildren) {

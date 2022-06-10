@@ -4,7 +4,7 @@ import {
 	faUserPen,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Button, ScrollArea, Tabs, Text, useMantineTheme } from "@mantine/core";
+import { ScrollArea, Tabs, Text, useMantineTheme } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import React from "react";
 

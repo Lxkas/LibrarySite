@@ -1,25 +1,24 @@
-import React, { useState } from "react";
-
-import {
-	Card,
-	Image,
-	Text,
-	Group,
-	Badge,
-	UnstyledButton,
-	ActionIcon,
-	createStyles,
-	ScrollArea,
-	Divider,
-	Overlay,
-} from "@mantine/core";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart } from "@fortawesome/free-regular-svg-icons";
-import { classNames } from "@/utils/classNames";
-import { faCheck, faX } from "@fortawesome/free-solid-svg-icons";
 import { BadgeCardProps } from "@/types/BadgeCardTypes";
 import BorrowBook from "@/utils/books/borrow";
+import { classNames } from "@/utils/classNames";
+import { faHeart } from "@fortawesome/free-regular-svg-icons";
+import { faCheck, faX } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+	ActionIcon,
+	Badge,
+	Card,
+	createStyles,
+	Divider,
+	Group,
+	Image,
+	Overlay,
+	ScrollArea,
+	Text,
+	UnstyledButton,
+} from "@mantine/core";
 import { showNotification, updateNotification } from "@mantine/notifications";
+import React, { useState } from "react";
 
 const useStyles = createStyles((theme) => ({
 	card: {

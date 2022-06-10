@@ -1,49 +1,38 @@
-import React, { PropsWithChildren, useState } from "react";
-import Link from "next/link";
-
 import {
-	AppShell,
-	Navbar,
-	Header,
-	Text,
-	Burger,
-	useMantineTheme,
-	ActionIcon,
-	useMantineColorScheme,
-	Transition,
-	UnstyledButton,
-	Group,
-	Divider,
-	ScrollArea,
-	Accordion,
-	Menu,
-	SegmentedControl,
-	Center,
-	Box,
-	MediaQuery,
-	Input,
-	Code,
-	Kbd,
-} from "@mantine/core";
-
-import {
-	faSun,
-	faMoon,
-	faHome,
+	faArrowRightToBracket,
 	faBookOpen,
 	faClock,
-	faGear,
-	faMagnifyingGlass,
-	faPhotoFilm,
-	faMessage,
-	faArrowsLeftRight,
-	faTrash,
 	faHeart,
-	faArrowRightToBracket,
+	faHome,
+	faMoon,
+	faSun,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import UserSection from "./shared/navigation/UserSection";
+import {
+	Accordion,
+	AppShell,
+	Box,
+	Burger,
+	Center,
+	Code,
+	Divider,
+	Group,
+	Header,
+	Kbd,
+	MediaQuery,
+	Navbar,
+	ScrollArea,
+	SegmentedControl,
+	Text,
+	Transition,
+	UnstyledButton,
+	useMantineColorScheme,
+	useMantineTheme,
+} from "@mantine/core";
 import { signIn, useSession } from "next-auth/react";
+import Link from "next/link";
+import React, { PropsWithChildren, useState } from "react";
+import UserSection from "./shared/navigation/UserSection";
 
 const NAV_SLIDE_OUT = {
 	in: { transform: "translateX(0)" },
