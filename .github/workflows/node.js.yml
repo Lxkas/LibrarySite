@@ -31,7 +31,7 @@ jobs:
             
             - run: |
                 touch .sentryclirc
-                echo ${{ secrets.SENTRYCLIRC }} >> .sentryclirc
+                echo "${{ secrets.SENTRYCLIRC }}" >> .sentryclirc
             
             - run: npm install
             - run: npm run build --if-present
