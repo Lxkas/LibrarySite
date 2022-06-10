@@ -199,7 +199,7 @@ export default function BookCard(props: BadgeCardProps) {
 
 							const borrow_success = result_json.success;
 
-							console.log(result_json);
+							// console.log(result_json);
 
 							// TODO: Add error msg
 							// TODO: this adds another second to the update, remove it later

@@ -38,7 +38,7 @@ export default NextAuth({
 				);
 
 				const result_response = await res.json();
-				console.log("Success login", result_response);
+				// console.log("Success login", result_response);
 
 				// If no error and we have user data, return it
 				if (res.ok && !result_response.error) {
